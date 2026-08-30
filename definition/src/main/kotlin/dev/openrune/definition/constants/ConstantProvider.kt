@@ -110,6 +110,14 @@ object ConstantProvider {
         else -> listOf(current)
     }
 
+    fun loadedProviders(): List<MappingProvider> {
+        if (!::provider.isInitialized) return emptyList()
+        return when (val current = provider) {
+            is CompositeMappingProvider -> current.providers
+            else -> listOf(current)
+        }
+    }
+
     fun getReverseMapping(table: String, key: Int): String {
         ensureProviderInitialized()
         val tableMappings = provider.mappings[table] ?: error("Missing table '$table'")
@@ -123,6 +131,13 @@ object ConstantProvider {
         ensureProviderInitialized()
         val tableMappings = provider.tableFor(key)
         return tableMappings[key] ?: error("Missing mapping for key: '$key'")
+    }
+
+    fun putMapping(table: String, key: String, id: Int) {
+        ensureProviderInitialized()
+        provider.mappings.getOrPut(table) { mutableMapOf() }["$table.$key"] = id
+        mappings = provider.mappings
+        if (!types.contains(table)) types.add(table)
     }
 
     fun getMappingOrNull(key: String): Int? {

@@ -14,7 +14,8 @@ class CacheTool(
     val cacheEnvironment: CacheEnvironment = CacheEnvironment.LIVE,
     val cacheLocation: File,
     val serverCacheLocation: File? = null,
-    val extraTasks: List<CacheTask> = emptyList()
+    val extraTasks: List<CacheTask> = emptyList(),
+    val autoCertIds: Map<String, Int> = emptyMap()
 ) {
     private val logger = InlineLogger()
 

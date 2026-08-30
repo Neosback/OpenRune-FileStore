@@ -38,7 +38,7 @@ class PackType(
 )
 
 class PackConfig(
-    private val directory: File,
+    internal val directory: File,
     private val tokenizedReplacements: Map<String, String> = emptyMap(),
     private val tokenizedFile: Path? = null,
 ) : CacheTask() {
